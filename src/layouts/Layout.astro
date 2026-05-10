@@ -10,7 +10,7 @@ const { title, description = "Handcrafted cold-pressed artisan soaps. Pure ingre
   <meta charset="UTF-8" />
   <meta name="description" content={description} />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} — SoapBizzz</title>
+  <title>{title} -- SoapBizzz</title>
   <script is:inline>
     (function(){
       var s='';try{s=localStorage.getItem('theme')||'';}catch{ /* ignore storage access errors */ }
@@ -104,7 +104,7 @@ const { title, description = "Handcrafted cold-pressed artisan soaps. Pure ingre
     </div>
     <div class="cart-items" id="cart-items-list">
       <div class="cart-empty">
-        <div class="cart-empty-icon">🧼</div>
+        <div class="cart-empty-icon"></div>
         <p>Your basket is empty.</p>
         <a href="/shop" class="btn" style="margin-top:var(--sp-2)">Start Shopping</a>
       </div>
@@ -146,7 +146,7 @@ const { title, description = "Handcrafted cold-pressed artisan soaps. Pure ingre
     <span class="popup-skip" id="popup-skip">No thanks, I'll pay full price</span>
   </div>
   <div class="popup-success" id="popup-success">
-    <div class="success-tick">🧼</div>
+    <div class="success-tick"></div>
     <h3>You're in!</h3>
     <p>Use this code at checkout:</p>
     <div class="popup-code">FIRST10</div>
