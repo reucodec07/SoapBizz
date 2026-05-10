@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Contact Us">
+  <section class="section-pad">
+    <div class="container" style={{ maxWidth: '800px', margin: '0 auto' }}>
+      <div class="ui-section-header">
+        <div>
+          <span class="ui-eyebrow">Get in touch</span>
+          <h2>Contact Us</h2>
+        </div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p>Whether you have a question about our cold-pressed process, an order inquiry, or just want to say hello, we'd love to hear from you.</p>
+          <div class="info-block">
+            <strong>Email</strong>
+            <a href="mailto:hello@soapbizzz.com">hello@soapbizzz.com</a>
+          </div>
+          <div class="info-block">
+            <strong>Studio (By appointment only)</strong>
+            <span>SoapBizzz Craft<br/>Leith, Edinburgh<br/>EH6 6JU</span>
+          </div>
+        </div>
+        <form class="contact-form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn" style={{ width: '100%' }}>Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-12); }
+  .contact-info p { color: var(--clr-text-muted); font-size: var(--text-base); margin-bottom: var(--sp-8); line-height: 1.6; }
+  .info-block { margin-bottom: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-2); }
+  .info-block strong { color: var(--clr-text); font-weight: 600; font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.05em; }
+  .info-block a, .info-block span { color: var(--clr-text-muted); font-size: var(--text-base); transition: color var(--transition); }
+  .info-block a:hover { color: var(--clr-primary); }
+  
+  .contact-form { display: flex; flex-direction: column; gap: var(--sp-6); background: var(--clr-surface); padding: var(--sp-8); border: 1px solid var(--clr-border); border-radius: var(--r-xl); }
+  .form-group { display: flex; flex-direction: column; gap: var(--sp-2); }
+  .form-group label { font-size: var(--text-sm); font-weight: 600; color: var(--clr-text); }
+  .form-group input, .form-group textarea { width: 100%; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--clr-border); border-radius: var(--r-md); background: var(--clr-bg); color: var(--clr-text); font-family: var(--font-body); transition: border-color var(--transition); }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--clr-primary); }
+  
+  @media (max-width: 768px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>

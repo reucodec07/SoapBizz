@@ -1,6 +1,6 @@
 import { config, fields, collection } from '@keystatic/core';
 
-// This allows you to use the local file system during development, 
+// This allows you to use the local file system during development,
 // but switches to GitHub mode when deployed to Vercel.
 const isLocal = process.env.NODE_ENV === 'development';
 
@@ -43,7 +43,7 @@ export default config({
             color: fields.text({ label: 'Color' }),
             scent: fields.text({ label: 'Scent' }),
           }),
-          { label: 'Bars', itemLabel: props => props.fields.title.value }
+          { label: 'Bars', itemLabel: (props) => props.fields.title.value },
         ),
       },
     }),
