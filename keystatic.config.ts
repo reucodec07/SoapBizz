@@ -10,7 +10,7 @@ export default config({
     : {
         kind: 'github',
         // TODO: Update this to your actual GitHub username and repo name once you upload it!
-        repo: 'YOUR_USERNAME/soapbizzz',
+        repo: 'reucodec07/SoapBizz',
       },
   collections: {
     products: collection({
