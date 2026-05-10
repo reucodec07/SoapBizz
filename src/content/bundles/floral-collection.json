@@ -1,0 +1,12 @@
+{
+  "name": "Floral Collection",
+  "tagline": "For the one who deserves flowers",
+  "price": "26.00",
+  "saving": "3.00",
+  "badge": "Perfect Gift",
+  "bars": [
+    { "title": "Lavender Dream", "color": "#E0BBE4", "scent": "Lavender & Vanilla" },
+    { "title": "Rose Petal", "color": "#FFCAD4", "scent": "Wild Rose" },
+    { "title": "Oatmeal Honey", "color": "#F3E5AB", "scent": "Sweet Honey & Oat" }
+  ]
+}

@@ -1,0 +1,191 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import { getAllBundles } from '../lib/content';
+
+const bundles = await getAllBundles();
+---
+
+<Layout title="Gift Bundles" description="Curated SoapBizzz gift sets. Save when you bundle.">
+
+  <PageHero
+    sectionClass="bundles-hero"
+    eyebrow="Gift Sets"
+    title="Soap makes a<br/><em>perfect</em> gift."
+    description="Curated bundles, hand-wrapped and shipped within 2 days. Save up to £8 versus buying individually."
+  />
+
+  <section class="bundles-body">
+    <div class="container">
+      <div class="bundles-grid">
+        {bundles.map((bundle, i) => (
+          <article class={`bundle-card reveal${i%2===1?' reveal-delay-1':''} ${bundle.id==='full-collection'?'bundle-featured':''}`}>
+            {bundle.badge && <div class="bundle-badge">{bundle.badge}</div>}
+
+            <div class="bundle-soaps" aria-hidden="true">
+              {bundle.bars.slice(0,4).map(bar => (
+                <div class="bundle-soap-bar" style={`background-color:${bar.color}`}></div>
+              ))}
+              {bundle.bars.length > 4 && (
+                <div class="bundle-soap-more">+{bundle.bars.length - 4}</div>
+              )}
+            </div>
+
+            <div class="bundle-body">
+              <div>
+                <h2 class="bundle-name">{bundle.name}</h2>
+                <p class="bundle-tagline">{bundle.tagline}</p>
+                <ul class="bundle-contents">
+                  {bundle.bars.map(bar => (
+                    <li>
+                      <span class="bar-dot" style={`background-color:${bar.color}`}></span>
+                      <span class="bar-name">{bar.title}</span>
+                      {bar.scent && <span class="bar-scent">{bar.scent}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="bundle-footer">
+                <div class="bundle-pricing">
+                  <span class="bundle-price">£{bundle.price}</span>
+                  <span class="bundle-saving">Save £{bundle.saving}</span>
+                </div>
+                <button class="btn bundle-add-btn"
+                  data-id={bundle.id}
+                  data-title={bundle.name}
+                  data-price={bundle.price}
+                  data-scent={bundle.bars.map(b=>b.title).join(', ')}
+                  data-color={bundle.bars[0].color.replace('#','')}>
+                  Add to Basket
+                </button>
+              </div>
+            </div>
+
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  .bundles-hero {
+    padding: calc(var(--header-h) + var(--sp-16)) 0 var(--sp-12);
+    background-color: var(--clr-surface);
+    border-bottom: 1px solid var(--clr-border);
+  }
+  .bundles-hero h1 { font-family:var(--font-display); font-size:var(--text-3xl); font-weight:300; color:var(--clr-text); margin-bottom:var(--sp-4); line-height:1.1; }
+  .bundles-hero h1 em { font-style:italic; color:var(--clr-primary); }
+  .bundles-hero p { font-size:var(--text-lg); color:var(--clr-text-muted); max-width:50ch; }
+
+  .bundles-body { padding: var(--sp-16) 0 var(--sp-24); }
+  .bundles-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:var(--sp-6); }
+
+  /* Card */
+  .bundle-card {
+    position:relative;
+    background-color:var(--clr-surface);
+    border:1px solid var(--clr-border);
+    border-radius:var(--r-xl);
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:transform var(--transition), box-shadow var(--transition);
+  }
+  .bundle-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+  .bundle-featured {
+    grid-column: 1 / -1;
+    flex-direction:row;
+  }
+  .bundle-featured .bundle-soaps { min-height:auto; min-width:280px; }
+  .bundle-featured .bundle-contents { columns:2; gap:var(--sp-6); }
+
+  /* Badge */
+  .bundle-badge {
+    position:absolute; top:var(--sp-4); right:var(--sp-4);
+    padding:var(--sp-1) var(--sp-3);
+    background-color:var(--clr-primary); color:#fff;
+    border-radius:var(--r-full);
+    font-size:var(--text-xs); font-weight:700;
+    text-transform:uppercase; letter-spacing:0.08em;
+    z-index:1;
+  }
+
+  /* Soap visual strip */
+  .bundle-soaps {
+    display:flex; align-items:center; justify-content:center;
+    gap:var(--sp-3); flex-wrap:wrap;
+    padding:var(--sp-8) var(--sp-6);
+    background-color:var(--clr-surface-2);
+    border-bottom:1px solid var(--clr-border);
+    min-height:140px;
+  }
+  .bundle-featured .bundle-soaps {
+    border-bottom:none; border-right:1px solid var(--clr-border);
+    flex-direction:column; flex-wrap:wrap; max-height:300px;
+  }
+  .bundle-soap-bar {
+    width:72px; height:46px; border-radius:12px;
+    box-shadow:var(--shadow-md);
+    transition:transform var(--transition);
+  }
+  .bundle-card:hover .bundle-soap-bar { transform:rotate(-4deg) scale(1.06); }
+  .bundle-soap-more {
+    width:46px; height:46px; border-radius:var(--r-full);
+    background-color:var(--clr-surface); border:1px solid var(--clr-border);
+    display:flex; align-items:center; justify-content:center;
+    font-size:var(--text-sm); font-weight:700; color:var(--clr-text-muted);
+  }
+
+  /* Body */
+  .bundle-body { padding:var(--sp-6); display:flex; flex-direction:column; justify-content:space-between; flex:1; gap:var(--sp-6); }
+  .bundle-name { font-family:var(--font-display); font-size:var(--text-xl); font-weight:400; color:var(--clr-text); margin-bottom:var(--sp-1); }
+  .bundle-tagline { font-size:var(--text-sm); color:var(--clr-text-muted); margin-bottom:var(--sp-5); }
+
+  /* Contents list */
+  .bundle-contents { display:flex; flex-direction:column; gap:var(--sp-2); }
+  .bundle-contents li { display:flex; align-items:center; gap:var(--sp-2); }
+  .bar-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .bar-name { font-size:var(--text-sm); font-weight:600; color:var(--clr-text); }
+  .bar-scent { font-size:var(--text-xs); color:var(--clr-text-muted); margin-left:var(--sp-1); }
+
+  /* Footer */
+  .bundle-footer { display:flex; align-items:center; justify-content:space-between; gap:var(--sp-4); padding-top:var(--sp-5); border-top:1px solid var(--clr-border); flex-wrap:wrap; }
+  .bundle-pricing { display:flex; flex-direction:column; gap:2px; }
+  .bundle-price { font-family:var(--font-display); font-size:var(--text-2xl); font-weight:400; color:var(--clr-text); line-height:1; }
+  .bundle-saving { font-size:var(--text-xs); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-accent); }
+  .bundle-add-btn { white-space:nowrap; }
+
+  @media (max-width:768px) {
+    .bundle-featured { flex-direction:column; }
+    .bundle-featured .bundle-soaps { border-right:none; border-bottom:1px solid var(--clr-border); }
+    .bundle-featured .bundle-contents { columns:1; }
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('.bundle-add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const el = btn as HTMLElement;
+        const { id, title, price, scent, color } = el.dataset;
+        if (!id || !title || !price || !scent || !color) {
+          console.error('Missing bundle dataset for add-to-cart button');
+          return;
+        }
+
+        window.cartState?.addItem({
+          id,
+          title,
+          price,
+          scent,
+          color,
+        });
+        const orig = btn.textContent;
+        btn.textContent = '✓ Added!';
+        setTimeout(() => { btn.textContent = orig; }, 1800);
+      });
+    });
+  });
+</script>

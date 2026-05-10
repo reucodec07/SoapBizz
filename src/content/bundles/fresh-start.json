@@ -1,0 +1,12 @@
+{
+  "name": "Fresh Start",
+  "tagline": "The morning routine trio",
+  "price": "24.00",
+  "saving": "2.50",
+  "badge": "Best Seller",
+  "bars": [
+    { "title": "Minty Morning", "color": "#95D5B2", "scent": "Peppermint & Eucalyptus" },
+    { "title": "Citrus Burst", "color": "#FFD6A5", "scent": "Orange & Grapefruit" },
+    { "title": "Ocean Breeze", "color": "#8BC6EC", "scent": "Sea Salt & Kelp" }
+  ]
+}

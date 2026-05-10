@@ -1,0 +1,18 @@
+---
+interface Props {
+  sectionClass: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+
+const { sectionClass, eyebrow, title, description } = Astro.props;
+---
+
+<section class={sectionClass}>
+  <div class="container">
+    <span class="ui-eyebrow reveal">{eyebrow}</span>
+    <h1 class="reveal reveal-delay-1" set:html={title} />
+    <p class="reveal reveal-delay-2">{description}</p>
+  </div>
+</section>

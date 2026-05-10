@@ -1,0 +1,11 @@
+{
+  "name": "Detox & Purify",
+  "tagline": "Deep clean, naturally",
+  "price": "18.00",
+  "saving": "1.00",
+  "badge": null,
+  "bars": [
+    { "title": "Charcoal Detox", "color": "#4A4E69", "scent": "Tea Tree & Charcoal" },
+    { "title": "Matcha Green Tea", "color": "#C8E6C9", "scent": "Matcha & Lemongrass" }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "The Full Collection",
+  "tagline": "One of everything — the ultimate gift",
+  "price": "64.00",
+  "saving": "8.00",
+  "badge": "Most Popular",
+  "bars": [
+    { "title": "Lavender Dream", "color": "#E0BBE4", "scent": "" },
+    { "title": "Citrus Burst", "color": "#FFD6A5", "scent": "" },
+    { "title": "Charcoal Detox", "color": "#4A4E69", "scent": "" },
+    { "title": "Ocean Breeze", "color": "#8BC6EC", "scent": "" },
+    { "title": "Rose Petal", "color": "#FFCAD4", "scent": "" },
+    { "title": "Minty Morning", "color": "#95D5B2", "scent": "" },
+    { "title": "Oatmeal Honey", "color": "#F3E5AB", "scent": "" },
+    { "title": "Matcha Green Tea", "color": "#C8E6C9", "scent": "" }
+  ]
+}

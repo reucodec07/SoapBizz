@@ -1,0 +1,140 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { formatDisplayDate, getAllPosts } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({ params: { slug: post.slug }, props: post }));
+}
+
+const post = Astro.props as CollectionEntry<'posts'>;
+const { Content } = await post.render();
+---
+<Layout title={post.data.title}>
+  <article class="post-article">
+
+    <header class="post-header">
+      <div class="container post-header-inner">
+        <a href="/blog" class="ui-back-link back-link">← The Journal</a>
+        <div class="post-meta">
+          <span class="post-cat">{post.data.category}</span>
+          <span class="meta-dot">·</span>
+          <span>{formatDisplayDate(post.data.date)}</span>
+          <span class="meta-dot">·</span>
+          <span>{post.data.readTime}</span>
+        </div>
+        <h1>{post.data.title}</h1>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="post-body">
+        <Content />
+      </div>
+    </div>
+
+    <div class="post-footer">
+      <div class="container post-footer-inner">
+        <a href="/blog" class="btn btn-ghost">← Back to Journal</a>
+        <a href="/shop" class="btn">Shop Our Soaps →</a>
+      </div>
+    </div>
+
+  </article>
+</Layout>
+
+<style>
+  .post-header {
+    padding: calc(var(--header-h) + var(--sp-16)) 0 var(--sp-12);
+    background-color: var(--clr-surface);
+    border-bottom: 1px solid var(--clr-border);
+    margin-bottom: var(--sp-16);
+  }
+  .post-header-inner { max-width: 720px; }
+  .back-link { margin-bottom: var(--sp-6); }
+  .post-meta {
+    display: flex; align-items: center; gap: var(--sp-2);
+    flex-wrap: wrap; margin-bottom: var(--sp-5);
+    font-size: var(--text-xs); color: var(--clr-text-muted);
+  }
+  .post-cat {
+    font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--clr-primary);
+  }
+  .meta-dot { color: var(--clr-text-faint); }
+  h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl); font-weight: 300;
+    color: var(--clr-text);
+    line-height: 1.15; max-width: 22ch;
+  }
+
+  /* ── Prose — all use --clr-text for maximum contrast in both modes ── */
+  .post-body { max-width: 680px; margin-bottom: var(--sp-20); }
+
+  .post-body :global(p) {
+    font-size: var(--text-base);
+    color: var(--clr-text);          /* full contrast, not muted */
+    line-height: 1.85;
+    margin-bottom: var(--sp-6);
+    max-width: 68ch;
+  }
+  .post-body :global(h2) {
+    font-family: var(--font-display);
+    font-size: var(--text-xl); font-weight: 400;
+    color: var(--clr-text);
+    margin-top: var(--sp-12); margin-bottom: var(--sp-4);
+  }
+  .post-body :global(h3) {
+    font-family: var(--font-display);
+    font-size: var(--text-lg); font-weight: 400;
+    color: var(--clr-text);
+    margin-top: var(--sp-8); margin-bottom: var(--sp-3);
+  }
+  .post-body :global(blockquote) {
+    border-left: 3px solid var(--clr-primary);
+    margin: var(--sp-8) 0;
+    padding: var(--sp-5) var(--sp-6);
+    background-color: var(--clr-surface);
+    border-radius: 0 var(--r-md) var(--r-md) 0;
+    font-family: var(--font-display);
+    font-size: var(--text-lg); font-style: italic;
+    color: var(--clr-text);          /* full contrast, not muted */
+    line-height: 1.65;
+  }
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    padding-left: var(--sp-6);
+    margin-bottom: var(--sp-6);
+    display: flex; flex-direction: column; gap: var(--sp-2);
+  }
+  .post-body :global(li) {
+    font-size: var(--text-base);
+    color: var(--clr-text);          /* full contrast, not muted */
+    line-height: 1.75;
+  }
+  .post-body :global(strong) {
+    font-weight: 700; color: var(--clr-text);
+  }
+  .post-body :global(a) {
+    color: var(--clr-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--transition);
+  }
+  .post-body :global(a:hover) { color: var(--clr-primary-hover); }
+  .post-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--clr-border);
+    margin: var(--sp-10) 0;
+  }
+
+  /* ── Footer ── */
+  .post-footer {
+    border-top: 1px solid var(--clr-border);
+    padding: var(--sp-10) 0 var(--sp-16);
+    background-color: var(--clr-surface);
+  }
+  .post-footer-inner { display: flex; gap: var(--sp-4); flex-wrap: wrap; }
+</style>

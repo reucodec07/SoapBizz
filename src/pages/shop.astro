@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { getAllProducts } from '../lib/content';
+
+const products = await getAllProducts();
+---
+<Layout title="Shop" description="Browse our full collection of cold-pressed artisan soaps.">
+
+  <PageHero
+    sectionClass="shop-hero"
+    eyebrow="Pure Collection"
+    title="Artisanal Soaps"
+    description="Cold-pressed and cured for 4 weeks. Find your perfect bar."
+  />
+
+  <section class="shop-body">
+    <div class="container">
+      <div class="filters reveal">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="floral">Floral</button>
+        <button class="filter-btn" data-filter="fresh">Fresh</button>
+        <button class="filter-btn" data-filter="earthy">Earthy</button>
+      </div>
+      <div class="ui-product-card-grid" id="shop-grid">
+        {products.map((product) => (
+          <ProductCard
+            title={product.title}
+            price={product.price}
+            imageColor={product.color}
+            scent={product.scent}
+            id={product.id}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  .shop-hero {
+    padding: calc(var(--header-h) + var(--sp-16)) 0 var(--sp-12);
+    background-color: var(--clr-surface);
+    border-bottom: 1px solid var(--clr-border);
+  }
+  .shop-hero h1 { font-family:var(--font-display); font-size:var(--text-3xl); font-weight:300; color:var(--clr-text); margin-bottom:var(--sp-3); }
+  .shop-hero p { color:var(--clr-text-muted); font-size:var(--text-lg); }
+  .shop-body { padding:var(--sp-12) 0 var(--sp-24); }
+  .filters { display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-bottom:var(--sp-10); }
+  .filter-btn {
+    padding:var(--sp-2) var(--sp-5);
+    border:1px solid var(--clr-border); border-radius:var(--r-full);
+    font-size:var(--text-sm); font-weight:500;
+    color:var(--clr-text-muted); background:transparent; cursor:pointer;
+    transition:background-color var(--transition),color var(--transition),border-color var(--transition);
+  }
+  .filter-btn:hover { background-color:var(--clr-surface-2); color:var(--clr-text); }
+  .filter-btn.active { background-color:var(--clr-text); color:var(--clr-bg); border-color:var(--clr-text); }
+</style>
+
+<script>
+  const SCENT_MAP: Record<string,string> = {
+    floral: 'lavender|rose|vanilla|wild rose',
+    fresh:  'citrus|orange|grapefruit|matcha|lemongrass|sea salt|kelp|peppermint|eucalyptus|ocean',
+    earthy: 'tea tree|charcoal|oatmeal|honey|oat|coconut',
+  };
+  document.addEventListener('astro:page-load', () => {
+    const grid = document.getElementById('shop-grid');
+    document.querySelectorAll<HTMLButtonElement>('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter!;
+        grid?.querySelectorAll<HTMLElement>('.product-card').forEach(card => {
+          const scent = (card.dataset.scent || '').toLowerCase();
+          card.style.display = f === 'all' || new RegExp(SCENT_MAP[f] || f).test(scent) ? '' : 'none';
+        });
+      });
+    });
+  });
+</script>

@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import { formatDisplayDate, getAllPosts } from '../lib/content';
+
+const posts = await getAllPosts();
+const featuredPost = posts[0];
+const remainingPosts = posts.slice(1);
+if (!featuredPost) {
+  throw new Error('No blog posts found');
+}
+---
+<Layout title="Journal" description="Insights into cold-process soap making, ingredient spotlights, and natural skincare.">
+
+  <PageHero
+    sectionClass="journal-hero"
+    eyebrow="The Journal"
+    title="Stories from<br/>the workbench."
+    description="Insights into cold-process soap making, ingredient spotlights, and natural skincare."
+  />
+
+  <section class="journal-body">
+    <div class="container">
+
+      <!-- Featured -->
+      <article class="post-featured reveal">
+        <div class="pf-body">
+          <div class="post-meta">
+            <span class="post-cat">{featuredPost.data.category}</span>
+            <span class="meta-dot">·</span>
+            <span class="post-date">{formatDisplayDate(featuredPost.data.date)}</span>
+            <span class="meta-dot">·</span>
+            <span class="post-rt">{featuredPost.data.readTime}</span>
+          </div>
+          <h2 class="pf-title"><a href={`/blog/${featuredPost.slug}`}>{featuredPost.data.title}</a></h2>
+          <p class="post-excerpt">{featuredPost.data.excerpt}</p>
+          <a href={`/blog/${featuredPost.slug}`} class="read-link">Read Article →</a>
+        </div>
+        <div class="pf-visual" aria-hidden="true">
+          <div class="deco-soap ds-a"></div>
+          <div class="deco-soap ds-b"></div>
+          <div class="deco-soap ds-c"></div>
+        </div>
+      </article>
+
+      <!-- Grid -->
+      <div class="posts-grid">
+        {remainingPosts.map((post, i) => (
+          <article class={`post-card reveal${i===1?' reveal-delay-1':''}`}>
+            <div class="pc-accent"></div>
+            <div class="pc-body">
+              <div class="post-meta">
+                <span class="post-cat">{post.data.category}</span>
+                <span class="meta-dot">·</span>
+                <span class="post-rt">{post.data.readTime}</span>
+              </div>
+              <h3 class="pc-title"><a href={`/blog/${post.slug}`}>{post.data.title}</a></h3>
+              <p class="post-excerpt">{post.data.excerpt}</p>
+              <div class="pc-footer">
+                <span class="post-date">{formatDisplayDate(post.data.date)}</span>
+                <a href={`/blog/${post.slug}`} class="read-link">Read →</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .journal-hero { padding:calc(var(--header-h) + var(--sp-16)) 0 var(--sp-12); background-color:var(--clr-surface); border-bottom:1px solid var(--clr-border); }
+  .journal-hero h1 { font-family:var(--font-display); font-size:var(--text-3xl); font-weight:300; color:var(--clr-text); margin-bottom:var(--sp-4); }
+  .journal-hero p { font-size:var(--text-lg); color:var(--clr-text-muted); max-width:48ch; }
+  .journal-body { padding:var(--sp-16) 0 var(--sp-24); }
+
+  /* Featured */
+  .post-featured { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-12); align-items:center; background-color:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--r-xl); padding:var(--sp-12); margin-bottom:var(--sp-10); overflow:hidden; }
+  .pf-title { font-family:var(--font-display); font-size:var(--text-2xl); font-weight:400; color:var(--clr-text); margin:var(--sp-4) 0 var(--sp-5); line-height:1.2; }
+  .pf-title a { color:var(--clr-text); transition:color var(--transition); }
+  .pf-title a:hover { color:var(--clr-primary); }
+  .pf-visual { position:relative; height:240px; display:flex; align-items:center; justify-content:center; }
+  /* Decorative soap bars — pastel hex so they show in both modes */
+  .deco-soap { position:absolute; border-radius:16px; box-shadow:var(--shadow-md); }
+  .ds-a { width:150px; height:95px; background-color:#E0BBE4; transform:rotate(-8deg) translate(-35px,-18px); }
+  .ds-b { width:150px; height:95px; background-color:#FFD6A5; transform:rotate(4deg) translate(28px,10px); }
+  .ds-c { width:130px; height:85px;  background-color:#95D5B2; transform:rotate(-3deg) translate(-8px,55px); }
+
+  /* Meta */
+  .post-meta { display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap; margin-bottom:var(--sp-2); }
+  .post-cat { font-size:var(--text-xs); font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--clr-primary); }
+  .meta-dot { color:var(--clr-text-faint); }
+  .post-date, .post-rt { font-size:var(--text-xs); color:var(--clr-text-muted); }
+  .post-excerpt { font-size:var(--text-base); color:var(--clr-text-muted); line-height:1.7; margin-bottom:var(--sp-6); max-width:52ch; }
+  .read-link { font-size:var(--text-sm); font-weight:600; color:var(--clr-primary); transition:color var(--transition),letter-spacing var(--transition); }
+  .read-link:hover { color:var(--clr-primary-hover); letter-spacing:0.06em; }
+
+  /* Grid cards */
+  .posts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:var(--sp-6); }
+  .post-card { background-color:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--r-lg); overflow:hidden; display:flex; flex-direction:column; transition:transform var(--transition),box-shadow var(--transition); }
+  .post-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); }
+  .pc-accent { height:4px; background:linear-gradient(90deg,var(--clr-primary),var(--clr-accent)); }
+  .pc-body { padding:var(--sp-6); display:flex; flex-direction:column; flex:1; }
+  .pc-title { font-family:var(--font-display); font-size:var(--text-xl); font-weight:400; color:var(--clr-text); margin:var(--sp-3) 0 var(--sp-4); line-height:1.25; flex:1; }
+  .pc-title a { color:var(--clr-text); transition:color var(--transition); }
+  .pc-title a:hover { color:var(--clr-primary); }
+  .pc-footer { display:flex; align-items:center; justify-content:space-between; padding-top:var(--sp-4); border-top:1px solid var(--clr-border); margin-top:var(--sp-4); }
+
+  @media (max-width:768px) {
+    .post-featured { grid-template-columns:1fr; padding:var(--sp-8); }
+    .pf-visual { display:none; }
+    .pf-title { font-size:var(--text-xl); }
+  }
+</style>

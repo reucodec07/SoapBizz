@@ -1,0 +1,194 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Checkout">
+  <section class="checkout-page">
+    <div class="container">
+      <a href="/shop" class="ui-back-link back-link">← Back to Shop</a>
+      <div class="checkout-grid">
+
+        <!-- Form -->
+        <div class="checkout-form">
+          <h1>Checkout</h1>
+          <p class="subtitle">Enter your details to complete your order.</p>
+
+          <form id="checkout-form">
+            <div class="form-section">
+              <h2>1. Contact Information</h2>
+              <div class="field">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="you@example.com" />
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2>2. Shipping Address</h2>
+              <div class="field-row">
+                <div class="field"><label for="fname">First Name</label><input type="text" id="fname" required /></div>
+                <div class="field"><label for="lname">Last Name</label><input type="text" id="lname" required /></div>
+              </div>
+              <div class="field"><label for="address">Address</label><input type="text" id="address" required /></div>
+              <div class="field-row">
+                <div class="field"><label for="city">City</label><input type="text" id="city" required /></div>
+                <div class="field"><label for="zip">Postal Code</label><input type="text" id="zip" required /></div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2>3. Payment</h2>
+              <div class="payment-mock">
+                <div class="field"><label for="card">Card Number</label><input type="text" id="card" placeholder="0000 0000 0000 0000" /></div>
+                <div class="field-row">
+                  <div class="field"><label for="exp">Expiry</label><input type="text" id="exp" placeholder="MM/YY" /></div>
+                  <div class="field"><label for="cvv">CVV</label><input type="text" id="cvv" placeholder="123" /></div>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn submit-btn">Complete Order</button>
+          </form>
+
+          <div class="success-msg" id="success-msg" style="display:none">
+            <div class="success-icon">✓</div>
+            <h2>Order Confirmed!</h2>
+            <p>Thank you for shopping with SoapBizzz. Your soaps are on their way.</p>
+            <a href="/" class="btn" style="margin-top:var(--sp-6)">Return Home</a>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <aside class="order-summary">
+          <h2>Order Summary</h2>
+          <div class="summary-items" id="summary-items"></div>
+          <div class="summary-totals">
+            <div class="summary-row"><span>Subtotal</span><span id="summary-subtotal">£0.00</span></div>
+            <div class="summary-row"><span>Shipping</span><span>£5.00</span></div>
+            <div class="summary-row total-row"><span>Total</span><span id="summary-total">£5.00</span></div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .checkout-page { padding:calc(var(--header-h) + var(--sp-12)) 0 var(--sp-24); }
+  .back-link { margin-bottom:var(--sp-8); }
+  .checkout-grid { display:grid; grid-template-columns:1.5fr 1fr; gap:var(--sp-16); align-items:start; }
+  h1 { font-family:var(--font-display); font-size:var(--text-2xl); font-weight:300; color:var(--clr-text); margin-bottom:var(--sp-2); }
+  .subtitle { color:var(--clr-text-muted); font-size:var(--text-base); margin-bottom:var(--sp-10); }
+  .form-section { margin-bottom:var(--sp-10); }
+  .form-section h2 { font-family:var(--font-display); font-size:var(--text-lg); font-weight:400; color:var(--clr-text); margin-bottom:var(--sp-6); padding-bottom:var(--sp-3); border-bottom:1px solid var(--clr-border); }
+  .field { display:flex; flex-direction:column; gap:var(--sp-2); margin-bottom:var(--sp-5); }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-4); }
+  label { font-size:var(--text-xs); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-text-muted); }
+  input {
+    padding:var(--sp-3) var(--sp-4);
+    border:1px solid var(--clr-border); border-radius:var(--r-md);
+    font-size:var(--text-base);
+    background-color:var(--clr-surface); color:var(--clr-text);
+    transition:border-color var(--transition), background-color var(--transition);
+  }
+  input:focus { outline:none; border-color:var(--clr-primary); }
+  input::placeholder { color:var(--clr-text-faint); }
+  .payment-mock { background-color:var(--clr-surface-2); padding:var(--sp-6); border-radius:var(--r-lg); border:1px solid var(--clr-border); }
+  .submit-btn { width:100%; justify-content:center; padding:var(--sp-4); font-size:var(--text-base); margin-top:var(--sp-4); }
+
+  /* Success */
+  .success-msg { text-align:center; padding:var(--sp-12) var(--sp-6); }
+  .success-icon { font-size:3rem; width:72px; height:72px; border-radius:50%; background-color:var(--clr-accent-light); color:var(--clr-accent); display:flex; align-items:center; justify-content:center; margin:0 auto var(--sp-6); }
+  .success-msg h2 { font-family:var(--font-display); font-size:var(--text-2xl); font-weight:400; color:var(--clr-text); margin-bottom:var(--sp-3); }
+  .success-msg p { color:var(--clr-text-muted); font-size:var(--text-base); }
+
+  /* Summary */
+  .order-summary { background-color:var(--clr-surface); border:1px solid var(--clr-border); border-radius:var(--r-xl); padding:var(--sp-8); position:sticky; top:calc(var(--header-h) + var(--sp-6)); }
+  .order-summary h2 { font-family:var(--font-display); font-size:var(--text-xl); font-weight:400; color:var(--clr-text); margin-bottom:var(--sp-6); }
+  .summary-items { display:flex; flex-direction:column; gap:var(--sp-4); margin-bottom:var(--sp-6); max-height:300px; overflow-y:auto; }
+  .summary-item { display:flex; gap:var(--sp-3); align-items:center; }
+  .summary-swatch { width:44px; height:52px; border-radius:var(--r-sm); flex-shrink:0; }
+  .summary-info { flex:1; }
+  .summary-info h4 { font-size:var(--text-sm); font-weight:600; color:var(--clr-text); margin-bottom:2px; }
+  .summary-info p { font-size:var(--text-xs); color:var(--clr-text-muted); }
+  .summary-price { font-weight:600; color:var(--clr-text); font-size:var(--text-sm); }
+  .summary-totals { border-top:1px solid var(--clr-border); padding-top:var(--sp-5); display:flex; flex-direction:column; gap:var(--sp-3); }
+  .summary-row { display:flex; justify-content:space-between; font-size:var(--text-sm); color:var(--clr-text-muted); }
+  .total-row { font-family:var(--font-display); font-size:var(--text-xl); font-weight:400; color:var(--clr-text); margin-top:var(--sp-2); padding-top:var(--sp-3); border-top:1px dashed var(--clr-border); }
+
+  @media (max-width:900px) { .checkout-grid{grid-template-columns:1fr;} .order-summary{position:static;} }
+  @media (max-width:480px) { .field-row{grid-template-columns:1fr;} }
+</style>
+
+<script is:inline>
+  document.addEventListener('astro:page-load', function() {
+    var items = window.cartState ? window.cartState.items : [];
+    var container = document.getElementById('summary-items');
+    var subtotalEl = document.getElementById('summary-subtotal');
+    var totalEl = document.getElementById('summary-total');
+
+    function renderSummary(items) {
+      function normalizeColor(value) {
+        if (!value) return '#cccccc';
+        return value.charAt(0) === '#' ? value : ('#' + value);
+      }
+      if (!container) return;
+      container.replaceChildren();
+      if (!items.length) {
+        var empty = document.createElement('p');
+        empty.style.color = 'var(--clr-text-muted)';
+        empty.style.fontSize = 'var(--text-sm)';
+        empty.textContent = 'Your basket is empty.';
+        container.appendChild(empty);
+        if (subtotalEl) subtotalEl.textContent = '£0.00';
+        if (totalEl) totalEl.textContent = '£5.00';
+        return;
+      }
+      items.forEach(function(item) {
+        var row = document.createElement('div');
+        row.className = 'summary-item';
+
+        var swatch = document.createElement('div');
+        swatch.className = 'summary-swatch';
+        swatch.style.backgroundColor = normalizeColor(item.color);
+
+        var info = document.createElement('div');
+        info.className = 'summary-info';
+
+        var title = document.createElement('h4');
+        title.textContent = item.title;
+
+        var qty = document.createElement('p');
+        qty.textContent = 'Qty: ' + item.quantity;
+
+        info.appendChild(title);
+        info.appendChild(qty);
+
+        var price = document.createElement('span');
+        price.className = 'summary-price';
+        price.textContent = '£' + (parseFloat(item.price) * item.quantity).toFixed(2);
+
+        row.appendChild(swatch);
+        row.appendChild(info);
+        row.appendChild(price);
+        container.appendChild(row);
+      });
+      var sub = window.cartState ? window.cartState.getTotal() : 0;
+      if (subtotalEl) subtotalEl.textContent = '£' + sub.toFixed(2);
+      if (totalEl) totalEl.textContent = '£' + (sub + 5).toFixed(2);
+    }
+
+    renderSummary(items);
+    window.addEventListener('cart-updated', function(e) { renderSummary(e.detail.items); });
+
+    var form = document.getElementById('checkout-form');
+    var successMsg = document.getElementById('success-msg');
+    form && form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (window.cartState && !window.cartState.items.length) { alert('Your basket is empty.'); return; }
+      form.style.display = 'none';
+      if (successMsg) successMsg.style.display = 'block';
+      if (window.cartState) window.cartState.clear();
+      window.scrollTo(0,0);
+    });
+  });
+</script>
